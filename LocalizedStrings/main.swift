@@ -98,10 +98,14 @@ func main() throws {
         }
     }
     
-    // Sort the language list into an array alphabetically with the base language at the top.
-    let langs = langSet.sorted { (a, b) -> Bool in
-        return (a == baseLang || a < b)
+    guard langSet.contains(baseLang) else {
+        die("No strings file in the base language (\(baseLang)) was found!")
     }
+    
+    // Sort the language list into an array alphabetically with the base language at the top.
+    langSet.remove(baseLang)
+    var langs = langSet.sorted()
+    langs.insert(baseLang, at: 0)
 
     print("Assessing localizations for \(langs.count) languages (\(langs.joined(separator: ", "))) in \(pseudoPaths.count) strings tables...\n")
 
